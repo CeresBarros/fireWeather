@@ -1,0 +1,5 @@
+"file" "checksum" "filesize" "algorithm"
+"DailyClimatic_CA-USnormals_1961-1990.zip" "831c7ba371361e10" "858123104" "xxhash64"
+"Export (WeatherGeneration).csv" "57389cd218c60e85" "5423247567" "xxhash64"
+"DEMrasters.zip" "ffa022b669500bdb" "2124533" "xxhash64"
+"DEM1kmRes.tif" "cb152b19b4aa227f" "88622" "xxhash64"

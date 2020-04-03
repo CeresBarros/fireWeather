@@ -158,22 +158,25 @@ Init <- function(sim) {
     dataModel <- detect_dm_csv(file.path(dPath, "Export (WeatherGeneration).csv"),
                                header = TRUE)
     dataLaF <- laf_open(dataModel)
-    weatherDataList <- loadFromCache(cachePath(sim),
-                                     unique(showCache(cachePath(sim),
-                                                      c("weatherData", "summarized"))$cacheId))
-    ## for some reason Cache doesn't seem to retrive cached obj
-    # weatherDataList <- Cache(process_blocks,
-    #                          x = dataLaF,
-    #                          fun = loadAndProcessWeatherData,
-    #                          projectWeatherData = projectWeatherData,
-    #                          crsProj = latLong,
-    #                          origCrsProj = sim$weatherDataCRS,
-    #                          FWIthresh = P(sim)$FWIthresh,
-    #                          timePeriod = P(sim)$timePeriod,
-    #                          weatherDataLastYear = P(sim)$weatherDataLastYear,
-    #                          progress = FALSE,
-    #                          userTags = c("weatherData", "summarized"),
-    #                          omitArgs = "userTags")
+
+    ## for some reason Cache doesn't seem to retrive cached obj, so we'll try to get it.
+    weatherDataCacheIds <- unique(showCache(cachePath(sim), c("weatherData", "summarized"))$cacheId)
+    if (length(weatherDataCacheIds) == 1) {
+      weatherDataList <- loadFromCache(cachePath(sim), weatherDataCacheIds)
+    } else {
+      weatherDataList <- Cache(process_blocks,
+                               x = dataLaF,
+                               fun = loadAndProcessWeatherData,
+                               projectWeatherData = projectWeatherData,
+                               crsProj = latLong,
+                               origCrsProj = sim$weatherDataCRS,
+                               FWIthresh = P(sim)$FWIthresh,
+                               timePeriod = P(sim)$timePeriod,
+                               weatherDataLastYear = P(sim)$weatherDataLastYear,
+                               progress = FALSE,
+                               userTags = c("weatherData", "summarized"),
+                               omitArgs = "userTags")
+    }
 
     sim$weatherData <- weatherDataList$weatherData
     sim$weatherDataMDC <- weatherDataList$weatherDataMDC

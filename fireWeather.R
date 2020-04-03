@@ -154,7 +154,6 @@ Init <- function(sim) {
     sim$weatherDataMDC <- FWIoutputs[, list(julMDC = mean(DC)), by = .(LAT, LONG, YR)]
 
   } else {
-    message(blue("Reading and processing weather data file in chunks..."))
     dataModel <- detect_dm_csv(file.path(dPath, "Export (WeatherGeneration).csv"),
                                header = TRUE)
     dataLaF <- laf_open(dataModel)
@@ -162,8 +161,10 @@ Init <- function(sim) {
     ## for some reason Cache doesn't seem to retrive cached obj, so we'll try to get it.
     weatherDataCacheIds <- unique(showCache(cachePath(sim), c("weatherData", "summarized"))$cacheId)
     if (length(weatherDataCacheIds) == 1) {
+      message(blue("Loading processed weather data file from cache..."))
       weatherDataList <- loadFromCache(cachePath(sim), weatherDataCacheIds)
     } else {
+      message(blue("Reading and processing weather data file in chunks..."))
       weatherDataList <- Cache(process_blocks,
                                x = dataLaF,
                                fun = loadAndProcessWeatherData,

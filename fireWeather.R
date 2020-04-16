@@ -50,7 +50,7 @@ defineModule(sim, list(
                               "total precipitation in mm. These data can be daily, monthly or yearly averages.",
                               "Defaults to daily weather data between 1691-1990, generated with BioSIM v11 using CA-US climate",
                               "normals 1961-1990 available from BioSIM."),
-                 sourceURL = "https://drive.google.com/file/d/16Oe8iN1QWRaG9QuiL1alsr3PYzdmff_K/view?usp=sharing"),
+                 sourceURL = "https://drive.google.com/file/d/1l6GCtYroV8MPyaWxVT92RZW5qMPnnuaU/view?usp=sharing"),
     expectsInput(objectName = "weatherDataCRS", objectClass = "character",
                  desc = paste("The original projection of 'weatherData'. Must be supplied if weatherData is",
                               "supplied by the user or a module. If using default 'weatherData', 'weatherDataCRS'",

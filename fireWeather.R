@@ -235,11 +235,13 @@ Init <- function(sim) {
         warning("Could not check the size of weatherData file. Please make sure it's small enough to load into memory")
 
     if (!P(sim)$loadWeatherInChunks) {
-      sim$weatherData <- Cache(prepInputs, targetFile = "Export (WeatherGeneration).csv",
+      sim$weatherData <- Cache(prepInputs,
+                               targetFile = "Export (WeatherGeneration).csv",
                                archive = "DailyClimatic_CA-USnormals_1961-1990.zip",
                                fun = "data.table::fread",
                                destinationPath = dPath,
                                url = extractURL("weatherData", sim),
+                               overwrite = TRUE,
                                userTags = c(cacheTags, "weatherData"),
                                omitArgs = "userTags")
 

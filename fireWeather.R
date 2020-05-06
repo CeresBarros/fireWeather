@@ -225,7 +225,7 @@ Init <- function(sim) {
                                  omitArgs = "userTags")
 
       message(blue("Assuming that 'weatherData' CRS projection is ", st_crs(weatherDataPoints)$proj4string))
-      sim$weatherDataCRS <- st_crs(weatherDataPoints)$proj4string
+      sim$weatherDataCRS <- crs(weatherDataPoints)
       rm(weatherDataPoints); .gc()
     }
 

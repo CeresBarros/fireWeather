@@ -12,7 +12,8 @@ defineModule(sim, list(
   keywords = c("weather", "climate", "data munging", "BioSIM"),
   authors = person("Ceres", "Barros", email = "cbarros@mail.ubc.ca", role = c("aut", "cre")),
   childModules = character(0),
-  version = numeric_version("0.0.1"),
+  version = list(fireWeather = numeric_version("0.0.1"),
+                 raster = "3.1-5"),
   spatialExtent = raster::extent(rep(NA_real_, 4)),
   timeframe = as.POSIXlt(c(NA, NA)),
   timeunit = "year",
@@ -224,7 +225,7 @@ Init <- function(sim) {
                                  userTags = c(cacheTags, "weatherDataPoints"),
                                  omitArgs = "userTags")
 
-      message(blue("Assuming that 'weatherData' CRS projection is ", st_crs(weatherDataPoints)$proj4string))
+      message(blue("Assuming that 'weatherData' CRS projection is ", crs(weatherDataPoints)))
       sim$weatherDataCRS <- crs(weatherDataPoints)
       rm(weatherDataPoints); .gc()
     }

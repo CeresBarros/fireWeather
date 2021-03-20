@@ -160,7 +160,7 @@ Init <- function(sim) {
     dataLaF <- laf_open(dataModel)
 
     ## for some reason Cache doesn't seem to retrive cached obj, so we'll try to get it.
-    weatherDataCacheIds <- unique(showCache(cachePath(sim), c("weatherData", "summarized"))$cacheId)
+    weatherDataCacheIds <- unique(showCache(cachePath(sim), userTags = c("weatherData", "summarized"))$cacheId)
     if (length(weatherDataCacheIds) == 1) {
       message(blue("Loading processed weather data file from cache..."))
       weatherDataList <- loadFromCache(cachePath(sim), weatherDataCacheIds)

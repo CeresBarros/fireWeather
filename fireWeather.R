@@ -106,6 +106,17 @@ Init <- function(sim) {
   rm(tempRas, tempRas2); .gc()
 
   ## does weatherData need to be loaded and processed in chunks?
+  ## when using cached .inputObjects, this object disappears so make it again if need be
+  if (is.null(mod$loadWeatherInChunks)) {
+    mod$loadWeatherInChunks <- P(sim)$loadWeatherInChunks
+
+    if (file.exists(file.path(dPath, "Export (WeatherGeneration).csv"))) {
+      mod$loadWeatherInChunks <- file.size(file.path(dPath, "Export (WeatherGeneration).csv")) > 4e+9
+    } else {
+      warning("Could not check the size of weatherDataMDC file. Please make sure it's small enough to load into memory")
+    }
+  }
+
   if (!mod$loadWeatherInChunks) {
     if (isTRUE(getOption("LandR.assertions"))) {
       if (any(is.na(sim$weatherData)))

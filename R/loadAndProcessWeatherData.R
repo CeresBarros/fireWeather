@@ -23,7 +23,7 @@
 #' @importFrom sf st_as_sf st_coordinates st_transform
 
 loadAndProcessWeatherData <- function (d, prevBlock, projectWeatherData, crsProj,
-                                       origCrsProj, FWIthresh, timePeriod, weatherDataLastYear) {
+                                       origCrsProj, FWIthresh, timePeriod, months = 7, weatherDataLastYear) {
   if (!nrow(d))
     return(prevBlock)
 
@@ -73,10 +73,10 @@ loadAndProcessWeatherData <- function (d, prevBlock, projectWeatherData, crsProj
 
   ## reduce weather data to appropriate time period for MDC
   timePeriod <- timePeriod - weatherDataLastYear
-  FWIoutputs <- FWIoutputs[YR %in% timePeriod & MON == 7]
+  FWIoutputs <- FWIoutputs[YR %in% timePeriod & MON %in% months]
 
-  ## average July DC per year to make weatherDataMDC
-  weatherDataMDC <- FWIoutputs[, list(julMDC = mean(DC)), by = .(LAT, LONG, YR)]
+  ## average DC across the selected months and days, per year to make weatherDataMDC
+  weatherDataMDC <- FWIoutputs[, list(meanMDC = mean(DC)), by = .(LAT, LONG, YR)]
 
   if (is.null(prevBlock)) {
     prevBlock <- list("weatherData" = weatherData, "weatherDataMDC" = weatherDataMDC)

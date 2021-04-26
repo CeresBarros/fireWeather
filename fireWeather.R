@@ -190,6 +190,7 @@ Init <- function(sim) {
                                userTags = c("weatherData", "summarized"),
                                omitArgs = "userTags")
     }
+    setnames(weatherDataList, "meanMCC", "julMDC")
 
     sim$weatherData <- weatherDataList$weatherData
     sim$weatherDataMDC <- weatherDataList$weatherDataMDC

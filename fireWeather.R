@@ -32,6 +32,9 @@ defineModule(sim, list(
     defineParameter("loadWeatherInChunks", "logical", FALSE, NA, NA,
                     desc = paste("Weather data can be extremely large and require being loaded in chunks. This defaults to FALSE,",
                                  "but if the weatherData file is > 4Gb, will be set to TRUE")),
+    defineParameter("MDCmonths", "integer", 7L, 1L, 12L,
+                    paste("The months (as a number) across which daily drought code (DC) will be averaged.",
+                          "Defaults to July (7)")),
     defineParameter("timePeriod", "numeric", 1960:1990, NA, NA,
                     paste("The time period used for 'weatherDataMCD'. Refers to the period on which the fire frequency",
                           "(i.e. ignition) model - see Marchal et al 2017 - will be fitted.",
@@ -104,6 +107,17 @@ Init <- function(sim) {
   } else FALSE
 
   rm(tempRas, tempRas2); .gc()
+
+  ## checks
+  if (is.numeric(P(sim)$MDCmonths)) {
+    if (P(sim)$MDCmonths > 12 |
+        P(sim)$MDCmonths < 1) {
+      stop("P(sim)$MDCmonths needs to be [1,12] - one or more values")
+    }
+  } else {
+    stop("P(sim)$MDCmonths should be a numeric vector of month(s)")
+  }
+
 
   ## does weatherData need to be loaded and processed in chunks?
   ## when using cached .inputObjects, this object disappears so make it again if need be
@@ -185,6 +199,7 @@ Init <- function(sim) {
                                origCrsProj = sim$weatherDataCRS,
                                FWIthresh = P(sim)$FWIthresh,
                                timePeriod = P(sim)$timePeriod,
+                               months = P(sim)$MDCmonths,
                                weatherDataLastYear = P(sim)$weatherDataLastYear,
                                progress = FALSE,
                                userTags = c("weatherData", "summarized"),

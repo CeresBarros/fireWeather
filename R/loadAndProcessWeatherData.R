@@ -12,8 +12,10 @@
 #'  Note that it needs to be compatible with cffdr::fwi
 #' @param origCrsProj what is the original projection of the data coordinates?
 #' @param FWIthresh what is the threshold (minimum or equal) FWI value to define a weather day?
+#' @param timePeriod years to consider for sumamry
+#' @param months month(s) across which the daily weather values will be averaged.
 #'
-#' @return a sumamrized version of the original table, subset to fire-day-like weather
+#' @return a summarized version of the original table, subset to fire-day-like weather
 #'
 #' @seealso \code{cffdr::fwi}
 #' @seealso \code{LaF::process_blocks}
@@ -22,7 +24,7 @@
 #' @importFrom data.table data.table rbind.data.table cbind.data.table
 #' @importFrom sf st_as_sf st_coordinates st_transform
 
-loadAndProcessWeatherData <- function (d, prevBlock, projectWeatherData, crsProj,
+loadAndProcessWeatherData <- function(d, prevBlock, projectWeatherData, crsProj,
                                        origCrsProj, FWIthresh, timePeriod, months = 7, weatherDataLastYear) {
   if (!nrow(d))
     return(prevBlock)

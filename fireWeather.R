@@ -127,7 +127,7 @@ Init <- function(sim) {
     if (file.exists(file.path(dPath, "Export (WeatherGeneration).csv"))) {
       mod$loadWeatherInChunks <- file.size(file.path(dPath, "Export (WeatherGeneration).csv")) > 4e+9
     } else {
-      warning("Could not check the size of weatherDataMDC file. Please make sure it's small enough to load into memory")
+      message(red("Could not check the size of weatherDataMDC file. Please make sure it's small enough to load into memory"))
     }
   }
 

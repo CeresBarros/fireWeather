@@ -177,7 +177,7 @@ Init <- function(sim) {
 
     ## get all monthly drought codes for fireSense
     ## average July DC per year
-    sim$weatherDataMDC <- FWIoutputs[, list(julMDC = mean(DC)), by = .(LAT, LONG, YR)]
+    sim$weatherDataMDC <- FWIoutputs[, list(meanMDC = mean(DC)), by = .(LAT, LONG, YR)]
 
   } else {
     dataModel <- detect_dm_csv(file.path(dPath, "Export (WeatherGeneration).csv"),
@@ -205,7 +205,6 @@ Init <- function(sim) {
                                userTags = c("weatherData", "summarized"),
                                omitArgs = "userTags")
     }
-    setnames(weatherDataList, "meanMCC", "julMDC")
 
     sim$weatherData <- weatherDataList$weatherData
     sim$weatherDataMDC <- weatherDataList$weatherDataMDC

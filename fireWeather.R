@@ -110,8 +110,8 @@ Init <- function(sim) {
 
   ## checks
   if (is.numeric(P(sim)$MDCmonths)) {
-    if (P(sim)$MDCmonths > 12 |
-        P(sim)$MDCmonths < 1) {
+    if (max(P(sim)$MDCmonths) > 12 |
+        min(P(sim)$MDCmonths) < 1) {
       stop("P(sim)$MDCmonths needs to be [1,12] - one or more values")
     }
   } else {

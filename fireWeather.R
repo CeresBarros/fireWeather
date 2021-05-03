@@ -196,20 +196,20 @@ Init <- function(sim) {
     dataLaF <- laf_open(dataModel)
 
     message(blue("Reading and processing weather data file in chunks..."))
-      weatherDataList <- Cache(process_blocks,
-                               x = dataLaF,
-                               fun = loadAndProcessWeatherData,
-                               projectWeatherData = projectWeatherData,
-                               crsProj = latLong,
-                               origCrsProj = sim$weatherDataCRS,
-                               FWIthresh = P(sim)$FWIthresh,
-                               timePeriod = P(sim)$timePeriod,
-                               months = P(sim)$MDCmonths,
+    weatherDataList <- Cache(process_blocks,
+                             x = dataLaF,
+                             fun = loadAndProcessWeatherData,
+                             projectWeatherData = projectWeatherData,
+                             crsProj = latLong,
+                             origCrsProj = sim$weatherDataCRS,
+                             FWIthresh = P(sim)$FWIthresh,
+                             timePeriod = P(sim)$timePeriod,
+                             months = P(sim)$MDCmonths,
+                             dates = P(sim)$weatherDates,
                              weatherDataLastYear = P(sim)$weatherDataLastYear,
-                               progress = FALSE,
-                               userTags = c("weatherData", "summarized"),
+                             progress = FALSE,
+                             userTags = c("weatherData", "summarized"),
                              omitArgs = c("x", "userTags", "cacheId"))
-    }
 
     sim$weatherData <- weatherDataList$weatherData
     sim$weatherDataMDC <- weatherDataList$weatherDataMDC

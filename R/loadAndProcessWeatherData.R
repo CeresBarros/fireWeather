@@ -14,6 +14,12 @@
 #' @param FWIthresh what is the threshold (minimum or equal) FWI value to define a weather day?
 #' @param timePeriod years to consider for sumamry
 #' @param months month(s) across which the daily weather values will be averaged.
+#' @param dates a vector of dates in ""%Y/%m/%d" format (see `as.Date`) to filter the weather date by.
+#'  If supplied it will override `months` and `timePeriod`. `weatherDataLastYear` is still necessary to
+#'  know with years in the weather data correspond to calendar years.
+#' @param weatherDataLastYear The last calendar year of the weather data
+#' @param averageDC logical. If TRUE, drought code values will be averaged across the `months` of `dates`
+#'  selected.
 #'
 #' @return a summarized version of the original table, subset to fire-day-like weather
 #'
@@ -25,7 +31,8 @@
 #' @importFrom sf st_as_sf st_coordinates st_transform
 
 loadAndProcessWeatherData <- function(d, prevBlock, projectWeatherData, crsProj,
-                                       origCrsProj, FWIthresh, timePeriod, months = 7, weatherDataLastYear) {
+                                      origCrsProj, FWIthresh, timePeriod, months = 7,
+                                      dates = NULL, weatherDataLastYear, averageDC = TRUE) {
   if (!nrow(d))
     return(prevBlock)
 
@@ -73,18 +80,33 @@ loadAndProcessWeatherData <- function(d, prevBlock, projectWeatherData, crsProj,
   toKeep <- FWIoutputs$FWI >= FWIthresh
   weatherData <- prevData[toKeep,]
 
-  ## reduce weather data to appropriate time period for MDC
-  timePeriod <- timePeriod - weatherDataLastYear
-  FWIoutputs <- FWIoutputs[YR %in% timePeriod & MON %in% months]
+  if (!is.null(dates)) {
+    browser()
+    ## convert weather data dates to calendar dates
+    calYears <- FWIoutputs$YR + weatherDataLastYear
+    weatherDates <- paste(calYears, FWIoutputs$MON, FWIoutputs$DAY, sep = "/")
+    weatherDates <- as.Date(weatherDates)
+    toKeep <- weatherDates %in% dates
+    FWIoutputs <- FWIoutputs[toKeep]
+  } else {
+    ## reduce weather data to appropriate time period for MDC
+    timePeriod <- timePeriod - weatherDataLastYear
+    FWIoutputs <- FWIoutputs[YR %in% timePeriod & MON %in% months]
+  }
 
-  ## average DC across the selected months and days, per year to make weatherDataMDC
-  weatherDataMDC <- FWIoutputs[, list(meanMDC = mean(DC)), by = .(LAT, LONG, YR)]
+  if (averageDC) {
+    ## average DC across the selected months and days, per year to make weatherDataMDC
+    weatherDataMDC <- FWIoutputs[, list(meanMDC = mean(DC)), by = .(LAT, LONG, YR)]
+  } else {
+    weatherDataMDC <- FWIoutputs[, .(LAT, LONG, YR, MON, DAY, DC)]
+  }
+
 
   if (is.null(prevBlock)) {
     prevBlock <- list("weatherData" = weatherData, "weatherDataMDC" = weatherDataMDC)
   } else {
-      prevBlock$weatherData <- rbind(prevBlock$weatherData, weatherData, use.names = TRUE)
-      prevBlock$weatherDataMDC <- rbind(prevBlock$weatherDataMDC, weatherDataMDC, use.names = TRUE)
-    }
+    prevBlock$weatherData <- rbind(prevBlock$weatherData, weatherData, use.names = TRUE)
+    prevBlock$weatherDataMDC <- rbind(prevBlock$weatherDataMDC, weatherDataMDC, use.names = TRUE)
+  }
   return(prevBlock)
 }

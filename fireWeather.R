@@ -41,6 +41,10 @@ defineModule(sim, list(
                           "Defaults to 1960 to 1990")),
     defineParameter("weatherDataLastYear", "numeric", 1990, NA, NA,
                     "The last calendar year of the weather data. Defaults to 1990"),
+    defineParameter("weatherDates", "Date", NULL, NA, NA,
+                    paste("OPTIONAL: dates to extract and process weather for in '%Y/%m/%d' format (see as.Date()).",
+                    "Overrides 'MDCmonths' and 'timePeriod'. 'weatherDataLastYear' is still necessary to know which",
+                    "years in the weather data correspond to calendar years.")),
     defineParameter(".plotInterval", "numeric", 1, NA, NA, "This describes the simulation time interval between plot events"),
     defineParameter(".useCache", "logical", "init", NA, NA,
                     desc = "use caching for the spinup simulation?")
@@ -207,7 +211,7 @@ Init <- function(sim) {
                                FWIthresh = P(sim)$FWIthresh,
                                timePeriod = P(sim)$timePeriod,
                                months = P(sim)$MDCmonths,
-                               weatherDataLastYear = P(sim)$weatherDataLastYear,
+                             weatherDataLastYear = P(sim)$weatherDataLastYear,
                                progress = FALSE,
                                userTags = c("weatherData", "summarized"),
                                omitArgs = "userTags")

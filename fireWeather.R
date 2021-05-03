@@ -195,13 +195,7 @@ Init <- function(sim) {
 
     dataLaF <- laf_open(dataModel)
 
-    ## for some reason Cache doesn't seem to retrive cached obj, so we'll try to get it.
-    weatherDataCacheIds <- unique(showCache(cachePath(sim), userTags = c("weatherData", "summarized"))$cacheId)
-    if (length(weatherDataCacheIds) == 1) {
-      message(blue("Loading processed weather data file from cache..."))
-      weatherDataList <- loadFromCache(cachePath(sim), weatherDataCacheIds)
-    } else {
-      message(blue("Reading and processing weather data file in chunks..."))
+    message(blue("Reading and processing weather data file in chunks..."))
       weatherDataList <- Cache(process_blocks,
                                x = dataLaF,
                                fun = loadAndProcessWeatherData,
@@ -214,7 +208,7 @@ Init <- function(sim) {
                              weatherDataLastYear = P(sim)$weatherDataLastYear,
                                progress = FALSE,
                                userTags = c("weatherData", "summarized"),
-                               omitArgs = "userTags")
+                             omitArgs = c("x", "userTags", "cacheId"))
     }
 
     sim$weatherData <- weatherDataList$weatherData

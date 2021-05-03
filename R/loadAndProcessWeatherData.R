@@ -81,7 +81,6 @@ loadAndProcessWeatherData <- function(d, prevBlock, projectWeatherData, crsProj,
   weatherData <- prevData[toKeep,]
 
   if (!is.null(dates)) {
-    browser()
     ## convert weather data dates to calendar dates
     calYears <- FWIoutputs$YR + weatherDataLastYear
     weatherDates <- paste(calYears, FWIoutputs$MON, FWIoutputs$DAY, sep = "/")

@@ -180,8 +180,15 @@ Init <- function(sim) {
     sim$weatherDataMDC <- FWIoutputs[, list(meanMDC = mean(DC)), by = .(LAT, LONG, YR)]
 
   } else {
-    dataModel <- detect_dm_csv(file.path(dPath, "Export (WeatherGeneration).csv"),
-                               header = TRUE)
+    ## for some reason the dataLaF is always different
+    ## and Cache(process_blocks,...) can't retrieve cached obj, so x (dataLaF) is ignored there
+    ## and Caching occurs before to detect changes in the .csv file
+    dataModel <- Cache(detect_dm_csv,
+                       filename = file.path(dPath, "Export (WeatherGeneration).csv"),
+                       header = TRUE,
+                       userTags = c("weatherData", "dataModel"),
+                       omitArgs = c("userTags"))
+
     dataLaF <- laf_open(dataModel)
 
     ## for some reason Cache doesn't seem to retrive cached obj, so we'll try to get it.

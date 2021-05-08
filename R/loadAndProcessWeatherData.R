@@ -18,10 +18,13 @@
 #'  If supplied it will override `months` and `timePeriod`. `weatherDataLastYear` is still necessary to
 #'  know with years in the weather data correspond to calendar years.
 #' @param weatherDataLastYear The last calendar year of the weather data
-#' @param averageDC logical. If TRUE, drought code values will be averaged across the `months` of `dates`
+#' @param averageDC logical. If TRUE, drought code values will be averaged across the `months` or `dates`
 #'  selected.
 #'
-#' @return a summarized version of the original table, subset to fire-day-like weather
+#' @return a list of two tables: `weatherData` and `weatherDataMDC`. `weatherData` is a filtered
+#'    version of the original weather data table, subset to fire-day-like weather (using FWIthresh).
+#'    `weatherDataMDC` is a table of (average, if `averageDC == TRUE`) drought code values calculated
+#'    for the `months` (within `timePeriod` and on a yearly basis), or `dates`.
 #'
 #' @seealso \code{cffdr::fwi}
 #' @seealso \code{LaF::process_blocks}

@@ -49,7 +49,7 @@ defineModule(sim, list(
     defineParameter(".useCache", "logical", "init", NA, NA,
                     desc = "use caching for the spinup simulation?")
   ),
-  inputObjects = bind_rows(
+  inputObjects = bindrows(
     expectsInput(objectName = "weatherData", objectClass = "sf",
                  desc = paste("Weather and topography point data, to be used to identify fire days.",
                               "Needs to have the following columns: 'month' (optional), 'day' (optional), 'temperature',",
@@ -64,7 +64,7 @@ defineModule(sim, list(
                               "supplied by the user or a module. If using default 'weatherData', 'weatherDataCRS'",
                               "defaults to '+proj=longlat +datum=WGS84 +no_defs', the projection used by BioSIM"))
   ),
-  outputObjects = bind_rows(
+  outputObjects = bindrows(
     createsOutput(objectName = "weatherData", objectClass = "sf",
                   desc = paste("Weather point data subset to fire days, according to the FWIthresh parameter.")),
     createsOutput(objectName = "weatherDataMDC", objectClass = "sf",

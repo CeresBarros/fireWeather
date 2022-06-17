@@ -21,9 +21,9 @@ defineModule(sim, list(
   documentation = list("README.txt", "fireWeather.Rmd"),
   reqdPkgs = list("R.utils", "raster", "data.table", "sf",
                   "cffdrs", "amc", "crayon", "LaF",
-                  "PredictiveEcology/SpaDES.core@development",
-                  "PredictiveEcology/SpaDES.tools@development",
-                  "PredictiveEcology/reproducible@development"),
+                  "PredictiveEcology/SpaDES.core (>= 1.0.8.9014)",
+                  "PredictiveEcology/SpaDES.tools (>= 0.3.8.9000)",
+                  "PredictiveEcology/reproducible (>= 1.2.8)"),
   parameters = rbind(
     defineParameter("FWIthresh", "integer", 19L, NA, NA,
                     paste("The fire weather index (FWI) minimum threshold value to classify a day as fire-day.",

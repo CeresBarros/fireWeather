@@ -12,7 +12,7 @@ defineModule(sim, list(
   keywords = c("weather", "climate", "data munging", "BioSIM"),
   authors = person("Ceres", "Barros", email = "cbarros@mail.ubc.ca", role = c("aut", "cre")),
   childModules = character(0),
-  version = list(fireWeather = numeric_version("0.0.1"),
+  version = list(fireWeather = numeric_version("1.0.0"),
                  raster = "3.1-5"),
   spatialExtent = raster::extent(rep(NA_real_, 4)),
   timeframe = as.POSIXlt(c(NA, NA)),
